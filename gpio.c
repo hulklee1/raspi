@@ -5,7 +5,9 @@
 #define GREEN	9
 #define YELLOW  7
 #define SW 		2
-//
+
+
+
 int mode = 0;
 int intv = 0;	// 0 ~ 8 
 int tim;		// delay time interval (ms)
