@@ -23,7 +23,6 @@ int main()
 		//delay(100);
 		printf("\033[%d;%dH(%d,%d)", y, x, x, y);
 		delay(200);
-	}
-	
+	}	
 	return 0;
 }
