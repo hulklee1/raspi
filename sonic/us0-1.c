@@ -10,12 +10,16 @@ extern void Play(double r);
 extern void PlayEx();
 
 double dist = 0.0;
-void * usThread(void *a)
+int t1=0;
+
+void usISR()
 {
-	while(1)
+	int tt = micros();
+	int s1 = digitalRead(ECHO);
+	if(s1 == 1) t1 = tt;
+	else
 	{
-		dist = Dist();
-		delay(100);
+		dist = (tt - t1) * 0.017;
 	}
 }
 int main(int argc, char **argv)
@@ -24,10 +28,9 @@ int main(int argc, char **argv)
 	pinMode(TRIG, OUTPUT);
 	pinMode(ECHO, INPUT);
 
-	pthread_t threadA, t1;
+	wiringPiISR(ECHO, INT_EDGE_BOTH, usISR);  // registration ECHO ISR 
 	printf("\033[2J\033[10;30H\n");
-	pthread_create(&threadA, NULL, usThread, NULL);
-	
+
 	for(;;)
 	{		
 		double d = dist;		
