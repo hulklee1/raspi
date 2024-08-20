@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 
-#define PORT	5005
+#define PORT	9000
 
 int main()
 {
@@ -28,12 +28,19 @@ int main()
 	int ret = connect(fd, (struct sockaddr*)(&sad), addrLen);
 	printf("client connect result : %d....\r\n", ret);
 
-	char buf[100];
+	char buf[100],b[50];
+	int r;
 	while(1)
 	{
 		printf("Message> "); scanf("%s",buf);
-		write(fd,buf,strlen(buf));
-		if(strcmp(buf, "exit") == 0) break;
+		send(fd,buf,strlen(buf),0);
+		if(strncmp(buf, "exit", 4) == 0) break;
+		r = recv(fd,b,50,0);
+		if(r > 0)
+		{
+			b[r] = 0; printf("\r\n%s\r\n",b);
+		}
+
 	}
 	close(fd);
 }

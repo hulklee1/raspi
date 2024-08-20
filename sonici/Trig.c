@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <wiringPi.h>
 
-#define  TRIG  8
+#define  TRIG  1
 #define  ECHO  9
 
 #define	CLK		19200000
 #define PSC		19
-#define RANGE	66666   // 15Hz
+#define RANGE	66667   // 15Hz
 #define	VAL		10
 
 void TriggerEx()

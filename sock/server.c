@@ -5,8 +5,9 @@
 #include <asm-generic/types.h>
 #include <unistd.h>
 #include <netinet/in.h>
+#include <wiringPi.h>
 
-#define PORT	5005
+#define PORT	9000
 
 int main()
 {
@@ -33,14 +34,25 @@ int main()
 	int client = accept(fd, (struct sockaddr*)(&cad), &addrLen);
 	printf("Accept client result : %d....\r\n", client);
 
+	wiringPiSetup();
+	pinMode(9, OUTPUT);
 	char buf[100];
 	while(1)
 	{
-		int r = read(client,buf,4);
+		int r = read(client,buf,100);
 		if(r == -1) break;
-		write(client,"OK\r\n",4);
-		printf("Input message > %s\r\n", buf);
-		if(strcmp(buf, "exit") == 0) break;
+		if(r > 0)
+		{
+			write(client,"OK",2); buf[r] = 0;
+			printf("Input message > %s\r\n", buf);
+			if(strncmp(buf, "exit",4) == 0) break;
+			if(strncmp(buf, "LED", 3) == 0)
+			{
+				int v; sscanf(buf+3, "%d", &v);
+				digitalWrite(9, v);
+				printf("    <Command> LED %d\r\n", v);
+			}
+		}
 	}
 	close(client);
 }

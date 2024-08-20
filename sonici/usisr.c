@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <wiringPi.h>
 
-#define  TRIG	8
+#define  TRIG	1
 #define  ECHO	9
 
 extern void Trigger();
